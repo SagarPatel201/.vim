@@ -19,7 +19,8 @@ syntax on " Turn on syntax processing
 set syn=auto
 set laststatus=2 " Turn on lightline even with a single pane.
 set noshowmode " Turn off native vim mode display
-let g:lightline = {
+" Have lightline use the darcula theme since that's the closest thing to minimalist it has.
+let g:lightline = { 
     \ 'colorscheme': 'darcula',
     \ }
 
@@ -61,4 +62,8 @@ nnoremap E $
 nnoremap ^ <nop>
 nnoremap $ <nop> 
 
-map <C-o> :NERDTreeToggle<CR>
+" Remap NERDTree to use ctrl+o
+map <C-o> :NERDTreeToggle<CR> 
+" vim-surround uses ysiw+key to wrap a word with a character. Bind that to ' 
+nmap ' ysiw 
+
