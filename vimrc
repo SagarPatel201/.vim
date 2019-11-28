@@ -4,6 +4,11 @@ call plug#begin('~/.vim/plugged')
 " Declare the list of plugins.
 Plug 'dikiaap/minimalist'
 Plug 'sjl/badwolf'
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
+Plug 'jiangmiao/auto-pairs'
 
 " List ends here. Plugins become visible to Vim after this call.
 
@@ -11,10 +16,17 @@ call plug#end()
 
 colorscheme minimalist 
 syntax on " Turn on syntax processing
+set syn=auto
+set laststatus=2 " Turn on lightline even with a single pane.
+set noshowmode " Turn off native vim mode display
+let g:lightline = {
+    \ 'colorscheme': 'darcula',
+    \ }
 
 " Spaces and tabs
 set tabstop=4 " 4 visual spaces per tab
 set softtabstop=4 " 4 visual spaces per tab when editing
+set shiftwidth=4
 set expandtab " Turn tabs into spaces
 
 set number " View line numbers
@@ -48,3 +60,5 @@ nnoremap E $
 " Rebind the old keys so they do nothing
 nnoremap ^ <nop>
 nnoremap $ <nop> 
+
+map <C-o> :NERDTreeToggle<CR>
