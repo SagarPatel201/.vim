@@ -9,19 +9,22 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
+Plug 'matveyt/vim-modest'
+Plug 'nathanlong/vim-colors-writer'
 
 " List ends here. Plugins become visible to Vim after this call.
 
 call plug#end()
 
-colorscheme minimalist 
+colorscheme modest 
+
 syntax on " Turn on syntax processing
 set syn=auto
 set laststatus=2 " Turn on lightline even with a single pane.
 set noshowmode " Turn off native vim mode display
 " Have lightline use the darcula theme since that's the closest thing to minimalist it has.
-let g:lightline = { 
-    \ 'colorscheme': 'darcula',
+ let g:lightline = { 
+    \ 'colorscheme': 'deus',
     \ }
 
 " Spaces and tabs
@@ -60,7 +63,7 @@ nnoremap E $
 
 " Rebind the old keys so they do nothing
 nnoremap ^ <nop>
-nnoremap $ <nop> 
+noremap $ <nop> 
 
 " Remap NERDTree to use ctrl+o
 map <C-o> :NERDTreeToggle<CR> 
