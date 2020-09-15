@@ -14,6 +14,7 @@ Plug 'nathanlong/vim-colors-writer'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -74,3 +75,7 @@ map <C-o> :NERDTreeToggle<CR>
 " vim-surround uses ysiw+key to wrap a word with a character. Bind that to ' 
 nmap ' ysiw 
 
+let g:ale_linters = {'C': ['gcc']}
+        
+" coc.nvim 
+let g:coc_disable_startup_warning = 1
