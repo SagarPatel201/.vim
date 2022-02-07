@@ -14,8 +14,10 @@ Plug 'nathanlong/vim-colors-writer'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'lervag/vimtex'
+Plug 'sirver/ultisnips'
 
 " List ends here. Plugins become visible to Vim after this call.
 
@@ -23,16 +25,32 @@ call plug#end()
 
 colorscheme minimalist 
 
+set term=xterm
+
 syntax on " Turn on syntax processing
 set syn=auto
 set laststatus=2 " Turn on lightline even with a single pane.
 set noshowmode " Turn off native vim mode display
 " Have lightline use the darcula theme since that's the closest thing to minimalist it has.
- let g:lightline = { 
-    \ 'colorscheme': 'darcula',
-    \ }
+let g:lightline = { 
+            \ 'colorscheme': 'darcula',
+            \ }
 
-highlight SignColumn ctermbg=black
+
+" Toggle background transparency
+let t:isTransparent = 1
+function! BGToggleTransparency()
+    if t:isTransparent == 0
+        hi Normal guibg=#111111 ctermbg=black
+        set background=dark
+        let t:isTransparent = 1
+    else
+        hi! Normal guibg=NONE ctermbg=NONE
+        hi! NonText ctermbg=NONE guifg=bg guibg=NONE 
+        let t:isTransparent = 0
+    endif
+endfunction
+nnoremap <F2> : call BGToggleTransparency()<CR>
 
 " Spaces and tabs
 set tabstop=4 " 4 visual spaces per tab
@@ -57,55 +75,44 @@ set hlsearch " Highlight matches
 set foldenable " enable folding
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10 " 10 nested folds maximum
-set foldmethod=indent
+set foldmethod=syntax
 
 " Movement
 " Move vertically by visual line
 nnoremap j gj
 nnoremap k gk
 
-" Rebind B and E to be move to the beginning and end of the line respectively
-nnoremap B ^ " 
-nnoremap E $ " 
+" Buffer movement
+map gn :bn<cr>
+map gp :bp<cr>
+map gd :bd<cr>
+
 
 " Rebind the old keys so they do nothing
-" nnoremap ^ <nop>
-" noremap $ <nop> 
+nnoremap ^ <nop>
+noremap $ <nop> 
 
 " Remap NERDTree to use ctrl+o
 map <C-o> :NERDTreeToggle<CR> 
+
 " vim-surround uses ysiw+key to wrap a word with a character. Bind that to ' 
-nmap ' ysiw 
+nmap \ ysiw 
+
+" Map a key to insert today's date -- Useful for notes. 
+:nnoremap <F5> "=strftime("%B %d, %Y")<CR>P
 
 let g:ale_linters = {'C': ['gcc']}
-        
-" coc.nvim 
-let g:coc_disable_startup_warning = 1
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
+if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
 endif
+au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-
+" Silence the crappy vimtex warnings
+let g:vimtex_quickfix_ignore_filters = [
+  \'Underfull \\hbox (badness [0-9]*) in ',
+  \'Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in ',
+  \'Overfull \\vbox ([0-9]*.[0-9]*pt too high) detected ',
+  \'Package hyperref Warning: Token not allowed in a PDF string',
+  \'Package typearea Warning: Bad type area settings!',
+  \]
