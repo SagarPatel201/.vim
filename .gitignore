@@ -1,0 +1,5 @@
+# Ignore the autoload directory created by Vim
+autoload/
+
+# Ignore the plugged directory created by vimplug
+plugged/
